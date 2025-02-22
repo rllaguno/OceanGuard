@@ -53,7 +53,7 @@ struct TitleView: View {
                     VStack {
                         MultiSpacer(quantity: 1)
 
-                        SpeechBubble(text: "Ahoy, matey! Welcome aboard OceanGuard!", text2: "Click on me to learn the ropes!")
+                        SpeechBubble(text: "Ahoy, matey! Welcome aboard Ocean Guard!", text2: "Click on me to learn the ropes!")
 
                         Button {
                             appViewModel.currentScreen = .tutorial

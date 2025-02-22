@@ -52,6 +52,7 @@ struct TutorialView: View {
                 
                 Text(String(tutorialScreen))
                     .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(.white)
                 
                 Spacer()
                 
@@ -75,15 +76,15 @@ struct TutorialView: View {
     func getText1(tutorialScreen: Int) -> String {
         switch tutorialScreen {
         case 1:
-            return "Ahoy there, recruit! Welcome aboard OceanGuard, the finest"
+            return "Ahoy there, recruit! Welcome aboard Ocean Guard, the finest"
         case 2:
             return "But listen up matey, our beautiful oceans be in trouble! Plastic bottles, bags, and all sorts"
         case 3:
-            return "We need yer help, sailor! Yer mission is simple—scoop up as much"
+            return "Yer mission is simple—scoop up as much trash as ye can before the boat's"
         case 4:
-            return "Steer this fine vessel using the gyroscope."
+            return "Steer our fine vessel using the gyroscope."
         case 5:
-            return "Keep yer eyes peeled for power-ups floatin’ in the water!"
+            return "Keep yer eyes peeled for upgrades floatin’ in the water!"
         case 6:
             return "With yer help, we can turn the tide against ocean pollution!"
         default:
@@ -98,11 +99,11 @@ struct TutorialView: View {
         case 2:
             return "o’ nasty junk be cloggin’ up the waters, harmin’ marine life and makin’ a mess of the deep blue."
         case 3:
-            return "trash as ye can in 30 seconds. The more ye collect, the cleaner our seas!"
+            return "battery depletes to 0! The more ye collect, the cleaner our seas!"
         case 4:
             return "Just tilt yer device like ye would the ship’s wheel!"
         case 5:
-            return "Snatch ‘em up to boost yer ship’s speed and efficiency!"
+            return "Solar panels recharge the battery and gears increase velocity!"
         case 6:
             return "Now, hoist the anchor and get to work, sailor!"
         default:
