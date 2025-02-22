@@ -68,6 +68,8 @@ struct TutorialView: View {
             
             Spacer()
         }
+        .background(.teal.gradient)
+
     }
     
     func getText1(tutorialScreen: Int) -> String {
@@ -149,4 +151,5 @@ struct TutorialView: View {
 
 #Preview {
     TutorialView()
+        .environmentObject(AppViewModel())
 }

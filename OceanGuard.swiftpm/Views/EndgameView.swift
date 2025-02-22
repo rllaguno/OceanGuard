@@ -38,10 +38,10 @@ struct EndgameView: View {
                 
                 MultiSpacer(quantity: 2)
                 
-                Text("Run Finished")
-                    .font(.system(size: 80, weight: .bold, design: .default))
-                    .foregroundColor(.black)
-                    .padding()
+                Image("RecapTitle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 400)
                 
                 MultiSpacer(quantity: 3)
 
@@ -75,6 +75,8 @@ struct EndgameView: View {
                 Spacer()
             }
         }
+        .background(.teal.gradient)
+
     }
     
     func updateStats() {

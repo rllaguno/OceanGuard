@@ -13,30 +13,36 @@ struct TitleView: View {
     var body: some View {
         ZStack {
             
-            Image("TitleScreen")
+            Image("OceanGuardTitle")
                 .resizable()
                 .scaledToFill()
+                .frame(width: 600, height: 600)
+                .offset(y: -250)
             
             VStack {
                 HStack {
                     
-                    MultiSpacer(quantity: 1)
+                    MultiSpacer(quantity: 2)
                     
                     VStack {
-                        MultiSpacer(quantity: 5)
+                        MultiSpacer(quantity: 6)
                         
                         Button {
                             appViewModel.currentScreen = .game
                         } label: {
-                            MenuButton(name: "Start Game")
+                            Image("StartTitle")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 150)
                         }
                         
-                        MultiSpacer(quantity: 1)
-
                         Button {
                             appViewModel.currentScreen = .statistics
                         } label: {
-                            MenuButton(name: "Statistics")
+                            Image("StatsTitle")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 150)
                         }
                         
                         MultiSpacer(quantity: 3)
@@ -55,6 +61,7 @@ struct TitleView: View {
                             TitleAnimation(type: "Mono Neutral")
                         }
                     }
+                    .offset(x: -60, y: 60)
                     
                     MultiSpacer(quantity: 1)
                 }
@@ -62,6 +69,7 @@ struct TitleView: View {
                 MultiSpacer(quantity: 1)
             }
         }
+        .background(.teal.gradient)
     }
 }
 

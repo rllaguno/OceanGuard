@@ -29,10 +29,10 @@ struct StatisticsView: View {
                 
                 MultiSpacer(quantity: 2)
                 
-                Text("Statistics")
-                    .font(.system(size: 80, weight: .bold, design: .default))
-                    .foregroundColor(.black)
-                    .padding()
+                Image("StatsTitle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 400)
                 
                 MultiSpacer(quantity: 3)
 
@@ -59,7 +59,10 @@ struct StatisticsView: View {
                 
                 Spacer()
             }
+            
         }
+        .background(.teal.gradient)
+
     }
 }
 
