@@ -32,9 +32,9 @@ struct TutorialView: View {
             
             MultiSpacer(quantity: 1)
             
-            SpeechBubble(text: getText1(tutorialScreen: tutorialScreen), text2: getText2(tutorialScreen: tutorialScreen))
+            TutorialSpeechBubble(text: getText1(tutorialScreen: tutorialScreen), text2: getText2(tutorialScreen: tutorialScreen), length: getLength(tutorialScreen: tutorialScreen))
             
-            TitleAnimation()
+            TitleAnimation(type: getImage(tutorialScreen: tutorialScreen))
             
             Spacer()
             
@@ -60,24 +60,30 @@ struct TutorialView: View {
                 } label: {
                     ForwardButton()
                 }
+                .disabled(tutorialScreen == 6)
+                
                 MultiSpacer(quantity: 5)
 
             }
+            
+            Spacer()
         }
     }
     
     func getText1(tutorialScreen: Int) -> String {
         switch tutorialScreen {
         case 1:
-            return "Welcome to Ocean Guard where we protect"
+            return "Ahoy there, recruit! Welcome aboard OceanGuard, the finest"
         case 2:
-            return ""
+            return "But listen up matey, our beautiful oceans be in trouble! Plastic bottles, bags, and all sorts"
         case 3:
-            return ""
+            return "We need yer help, sailor! Yer mission is simple—scoop up as much"
         case 4:
-            return ""
+            return "Steer this fine vessel using the gyroscope."
         case 5:
-            return ""
+            return "Keep yer eyes peeled for power-ups floatin’ in the water!"
+        case 6:
+            return "With yer help, we can turn the tide against ocean pollution!"
         default:
             return ""
         }
@@ -86,17 +92,57 @@ struct TutorialView: View {
     func getText2(tutorialScreen: Int) -> String {
         switch tutorialScreen {
         case 1:
-            return "the ocean, its wildlife and ecosystem!"
+            return " crew of ocean-cleanin' sailors this side of the seven seas!"
         case 2:
-            return ""
+            return "o’ nasty junk be cloggin’ up the waters, harmin’ marine life and makin’ a mess of the deep blue."
         case 3:
-            return ""
+            return "trash as ye can in 30 seconds. The more ye collect, the cleaner our seas!"
         case 4:
-            return ""
+            return "Just tilt yer device like ye would the ship’s wheel!"
         case 5:
-            return ""
+            return "Snatch ‘em up to boost yer ship’s speed and efficiency!"
+        case 6:
+            return "Now, hoist the anchor and get to work, sailor!"
         default:
             return ""
+        }
+    }
+    
+    func getImage(tutorialScreen: Int) -> String {
+        switch tutorialScreen {
+        case 1:
+            return "Mono Neutral"
+        case 2:
+            return "Mono Preocupado"
+        case 3:
+            return "Mono Cabreado"
+        case 4:
+            return "Mono Sorprendido"
+        case 5:
+            return "Mono Sus"
+        case 6:
+            return "Mono Neutral"
+        default:
+            return "Mono Neutral"
+        }
+    }
+    
+    func getLength(tutorialScreen: Int) -> CGFloat {
+        switch tutorialScreen {
+        case 1:
+            return 750
+        case 2:
+            return 1100
+        case 3:
+            return 850
+        case 4:
+            return 600
+        case 5:
+            return 700
+        case 6:
+            return 700
+        default:
+            return 600
         }
     }
 }

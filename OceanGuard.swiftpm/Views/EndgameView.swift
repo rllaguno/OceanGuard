@@ -8,11 +8,93 @@
 import SwiftUI
 
 struct EndgameView: View {
+    @EnvironmentObject var appViewModel: AppViewModel
+
+    @AppStorage("highScore") private var highScore = 0
+    @AppStorage("total") private var total = 0
+    @AppStorage("runs") private var runs = 0
+    
+    var isHighscore: Bool {
+        if appViewModel.currentScore > highScore {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                MultiSpacer(quantity: 1)
+                
+                Button {
+                    updateStats()
+                    resetGame()
+                    appViewModel.currentScreen = .title
+                } label: {
+                    BackButton()
+                }
+                .buttonStyle(.plain)
+                
+                MultiSpacer(quantity: 2)
+                
+                Text("Run Finished")
+                    .font(.system(size: 80, weight: .bold, design: .default))
+                    .foregroundColor(.black)
+                    .padding()
+                
+                MultiSpacer(quantity: 3)
+
+            }
+            
+            HStack {
+                Spacer()
+                
+                VStack {
+                    MultiSpacer(quantity: 1)
+                    
+                    EndSpeechBubble(text: "Ye did a fine job cleanin’ the seas! The ocean be grateful", text2: "for yer hard work—keep sailin’ and savin’ the blue!", length: 650, highscore: appViewModel.currentScore > highScore)
+                    
+                    TitleAnimation(type: "Mono Neutral")
+                }
+                
+                Spacer()
+                
+                VStack {
+                    StatBox(text: "Total trash picked:", number: appViewModel.currentScore, text2: "items")
+                    HStack {
+                        ItemBox(type: "Botella Aplastada", quantity: appViewModel.currentBlueBottles)
+                        ItemBox(type: "Botella Torcida", quantity: appViewModel.currentGreenBottles)
+                    }
+                    HStack {
+                        ItemBox(type: "Bolsa CONAD", quantity: appViewModel.currentOrangeBags)
+                        ItemBox(type: "Lata", quantity: appViewModel.currentRedCans)
+                    }
+                }
+                
+                Spacer()
+            }
+        }
+    }
+    
+    func updateStats() {
+        runs += 1
+        total += appViewModel.currentScore
+        if appViewModel.currentScore > highScore {
+            highScore = appViewModel.currentScore
+        }
+    }
+    
+    func resetGame() {
+        appViewModel.currentScore = 0
+        appViewModel.currentGreenBottles = 0
+        appViewModel.currentRedCans = 0
+        appViewModel.currentBlueBottles = 0
+        appViewModel.currentOrangeBags = 0
     }
 }
 
 #Preview {
     EndgameView()
+        .environmentObject(AppViewModel())
 }

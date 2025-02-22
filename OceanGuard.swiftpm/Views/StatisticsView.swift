@@ -44,9 +44,9 @@ struct StatisticsView: View {
                 VStack {
                     MultiSpacer(quantity: 1)
                     
-                    SpeechBubble(text: "Thank you for helping us preserve and", text2: "clean our oceans! Your work so far:")
+                    TutorialSpeechBubble(text: "Thank you for helping us preserve and", text2: "clean our oceans! Your work so far:", length: 450)
                     
-                    TitleAnimation()
+                    TitleAnimation(type: "Mono Neutral")
                 }
                 
                 Spacer()

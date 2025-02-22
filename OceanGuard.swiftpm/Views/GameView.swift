@@ -6,13 +6,30 @@
 //
 
 import SwiftUI
+import SpriteKit
+
+import SwiftUI
+import SpriteKit
 
 struct GameView: View {
+    @EnvironmentObject var appViewModel: AppViewModel // Use EnvironmentObject
+
+    var scene: SKScene {
+        let scene = GameScene()
+        scene.size = UIScreen.main.bounds.size
+        scene.scaleMode = .aspectFill
+        scene.appViewModel = appViewModel
+        return scene
+    }
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        SpriteView(scene: scene)
+            .ignoresSafeArea()
     }
 }
 
+
 #Preview {
     GameView()
+        .environmentObject(AppViewModel())
 }

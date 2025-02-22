@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-struct SpeechBubble: View {
+struct EndSpeechBubble: View {
     let text: String
     let text2: String
+    let length: CGFloat
+    let highscore: Bool
     
     var body: some View {
         ZStack {
@@ -28,7 +30,7 @@ struct SpeechBubble: View {
             
             Rectangle()
                 .foregroundStyle(Color.black)
-                .frame(width: 560, height: 110)
+                .frame(width: length + 10, height: 110)
                 .cornerRadius(20)
             
             Rectangle()
@@ -39,20 +41,33 @@ struct SpeechBubble: View {
             
             Rectangle()
                 .foregroundStyle(Color.speechBubble)
-                .frame(width: 550, height: 100)
+                .frame(width: length, height: 100)
                 .cornerRadius(20)
             
-            VStack(alignment: .leading) {
-                Text(text)
-                    .font(.system(size: 24, weight: .semibold))
-                Text(text2)
-                    .font(.system(size: 24, weight: .semibold))
-                    .offset(x: 60)
+            if highscore {
+                VStack {
+                    HStack {
+                        Text("Ye've set a ")
+                        Text("new high score")
+                            .foregroundStyle(.yellow)
+                        Text(", matey! The ocean be cheerin’")
+                    }
+                    Text("ye. Keep haulin’ that trash and makin’ the waters proud!")
+                }
+                .font(.system(size: 24, weight: .semibold))
+
+            } else {
+                VStack(alignment: .leading) {
+                    Text(text)
+                        .font(.system(size: 24, weight: .semibold))
+                    Text(text2)
+                        .font(.system(size: 24, weight: .semibold))
+                }
             }
         }
     }
 }
 
 #Preview {
-    SpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!")
+    EndSpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!", length: 650, highscore: true)
 }

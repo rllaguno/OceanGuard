@@ -47,12 +47,12 @@ struct TitleView: View {
                     VStack {
                         MultiSpacer(quantity: 1)
 
-                        SpeechBubble(text: "Ahoy Matey! Welcome to the Ocean Guard!", text2: "Click on me if you want to learn the ropes!")
+                        SpeechBubble(text: "Ahoy, matey! Welcome aboard OceanGuard!", text2: "Click on me to learn the ropes!")
 
                         Button {
                             appViewModel.currentScreen = .tutorial
                         } label: {
-                            TitleAnimation()
+                            TitleAnimation(type: "Mono Neutral")
                         }
                     }
                     

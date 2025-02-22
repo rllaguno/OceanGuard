@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct SpeechBubble: View {
+struct TutorialSpeechBubble: View {
     let text: String
     let text2: String
+    let length: CGFloat
     
     var body: some View {
         ZStack {
@@ -28,7 +29,7 @@ struct SpeechBubble: View {
             
             Rectangle()
                 .foregroundStyle(Color.black)
-                .frame(width: 560, height: 110)
+                .frame(width: length + 10, height: 110)
                 .cornerRadius(20)
             
             Rectangle()
@@ -39,7 +40,7 @@ struct SpeechBubble: View {
             
             Rectangle()
                 .foregroundStyle(Color.speechBubble)
-                .frame(width: 550, height: 100)
+                .frame(width: length, height: 100)
                 .cornerRadius(20)
             
             VStack(alignment: .leading) {
@@ -47,12 +48,11 @@ struct SpeechBubble: View {
                     .font(.system(size: 24, weight: .semibold))
                 Text(text2)
                     .font(.system(size: 24, weight: .semibold))
-                    .offset(x: 60)
             }
         }
     }
 }
 
 #Preview {
-    SpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!")
+    TutorialSpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!", length: 800)
 }
