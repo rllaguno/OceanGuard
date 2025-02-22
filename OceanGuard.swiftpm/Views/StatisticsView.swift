@@ -52,7 +52,7 @@ struct StatisticsView: View {
                 Spacer()
                 
                 VStack {
-                    StatBox(text: "Most trash picked in a session:", number: highScore, text2: "items")
+                    StatBox(text: "Most trash picked in a run:", number: highScore, text2: "items")
                     StatBox(text: "Total trash picked:", number: total, text2: "items")
                     StatBox(text: "Total Ocean Guard runs:", number: runs, text2: "runs")
                 }
