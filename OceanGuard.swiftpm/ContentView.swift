@@ -1,12 +1,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var appViewModel: AppViewModel
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        switch appViewModel.currentScreen {
+        case .title:
+            TitleView()
+        case .tutorial:
+            TutorialView()
+        case .statistics:
+            StatisticsView()
+        case .game:
+            GameView()
+        case .endgame:
+            EndgameView()
         }
     }
 }
