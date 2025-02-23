@@ -8,11 +8,6 @@ struct MyApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(appViewModel)
-                .onAppear {
-                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                        windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
-                    }
-                }
         }
     }
 }
