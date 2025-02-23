@@ -8,9 +8,6 @@
 import SwiftUI
 import SpriteKit
 
-import SwiftUI
-import SpriteKit
-
 struct GameView: View {
     @EnvironmentObject var appViewModel: AppViewModel // Use EnvironmentObject
 
