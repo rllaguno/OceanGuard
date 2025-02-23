@@ -48,14 +48,16 @@ struct EndSpeechBubble: View {
                 VStack {
                     HStack {
                         Text("Ye've set a ")
+                            .foregroundStyle(.black)
                         Text("new high score")
                             .foregroundStyle(.yellow)
                         Text(", matey! The ocean be cheerin’")
+                            .foregroundStyle(.black)
                     }
                     Text("ye. Keep haulin’ that trash and makin’ the waters proud!")
+                        .foregroundStyle(.black)
                 }
                 .font(.system(size: 24, weight: .semibold))
-                .foregroundStyle(.black)
 
             } else {
                 VStack(alignment: .leading) {
