@@ -37,11 +37,13 @@ struct ItemBox: View {
             Text(title)
                 .offset(y: -20)
                 .font(.system(size: 18))
+                .foregroundStyle(.black)
 
             HStack {
                 Text(String(quantity))
                     .offset(y: 20)
                     .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(.black)
                 Image(type)
                     .resizable()
                     .scaledToFit()

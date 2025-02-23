@@ -46,13 +46,15 @@ struct TutorialSpeechBubble: View {
             VStack(alignment: .leading) {
                 Text(text)
                     .font(.system(size: 24, weight: .semibold))
+                    .foregroundStyle(.black)
                 Text(text2)
                     .font(.system(size: 24, weight: .semibold))
+                    .foregroundStyle(.black)
             }
         }
     }
 }
 
 #Preview {
-    TutorialSpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!", length: 800)
+    TutorialSpeechBubble(text: "Ahoy Matey! Welcome to Sea Guard!", text2: "Click on me if you want to learn the ropes!", length: 800)
 }

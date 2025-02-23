@@ -8,13 +8,13 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Ocean Guard",
+    name: "Sea Guard",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "Ocean Guard",
+            name: "Sea Guard",
             targets: ["AppModule"],
             bundleIdentifier: "me.llaguno.rodrigo.OceanGuard",
             teamIdentifier: "FU5W7DQJJC",
@@ -23,14 +23,11 @@ let package = Package(
             appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.teal),
             supportedDeviceFamilies: [
-                .pad,
-                .phone
+                .pad
             ],
             supportedInterfaceOrientations: [
-                .portrait,
                 .landscapeRight,
-                .landscapeLeft,
-                .portraitUpsideDown(.when(deviceFamilies: [.pad]))
+                .landscapeLeft
             ],
             appCategory: .arcadeGames
         )

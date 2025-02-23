@@ -54,7 +54,7 @@ struct TutorialView: View {
                 Button {
                     tutorialScreen -= 1
                 } label: {
-                    BackButton()
+                    PreviousButton()
                 }
                 .disabled(tutorialScreen == 1)
                 
@@ -86,13 +86,13 @@ struct TutorialView: View {
     func getText1(tutorialScreen: Int) -> String {
         switch tutorialScreen {
         case 1:
-            return "Ahoy there, recruit! Welcome aboard Ocean Guard, the finest"
+            return "Ahoy there, recruit! Welcome aboard Sea Guard, the finest"
         case 2:
             return "But listen up matey, our beautiful oceans be in trouble! Plastic bottles, bags, and all sorts"
         case 3:
             return "Yer mission is simple—scoop up as much trash as ye can before the boat's"
         case 4:
-            return "Steer our fine vessel using the gyroscope."
+            return "Guide this fine vessel by tiltin’ yer device left or"
         case 5:
             return "Keep yer eyes peeled for upgrades floatin’ in the water!"
         case 6:
@@ -111,7 +111,7 @@ struct TutorialView: View {
         case 3:
             return "battery depletes to 0! The more ye collect, the cleaner our seas!"
         case 4:
-            return "Just tilt yer device like ye would the ship’s wheel!"
+            return "right—just like steer’n a real ship’s wheel!"
         case 5:
             return "Solar panels recharge the battery and gears increase velocity!"
         case 6:
@@ -162,7 +162,7 @@ struct TutorialView: View {
     func getSupportImages(tutorialScreen: Int) -> [String] {
         switch tutorialScreen {
         case 1:
-            return ["OceanGuardTitle"]
+            return ["SeaGuardTitle"]
         case 2:
             return ["Botella Torcida", "Botella Aplastada", "Bolsa CONAD", "Lata"]
         case 3:
@@ -172,7 +172,7 @@ struct TutorialView: View {
         case 5:
             return ["Battery Upgrade", "Gear Upgrade"]
         case 6:
-            return ["OceanGuardTitle"]
+            return ["SeaGuardTitle"]
         default:
             return [""]
         }

@@ -55,19 +55,19 @@ struct EndSpeechBubble: View {
                     Text("ye. Keep haulin’ that trash and makin’ the waters proud!")
                 }
                 .font(.system(size: 24, weight: .semibold))
+                .foregroundStyle(.black)
 
             } else {
                 VStack(alignment: .leading) {
                     Text(text)
-                        .font(.system(size: 24, weight: .semibold))
                     Text(text2)
-                        .font(.system(size: 24, weight: .semibold))
                 }
+                .font(.system(size: 24, weight: .semibold))
             }
         }
     }
 }
 
 #Preview {
-    EndSpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!", length: 650, highscore: true)
+    EndSpeechBubble(text: "Ahoy Matey! Welcome to Sea Guard!", text2: "Click on me if you want to learn the ropes!", length: 650, highscore: true)
 }

@@ -27,7 +27,7 @@ struct HighscoreBox: View {
             Text(text)
                 .offset(y: -20)
                 .font(.system(size: 18))
-
+                .foregroundStyle(.black)
             
             Text("\(String(number)) \(text2)")
                 .offset(y: 20)

@@ -45,14 +45,16 @@ struct SpeechBubble: View {
             VStack(alignment: .leading) {
                 Text(text)
                     .font(.system(size: 24, weight: .semibold))
+                    .foregroundStyle(.black)
                 Text(text2)
                     .font(.system(size: 24, weight: .semibold))
                     .offset(x: 60)
+                    .foregroundStyle(.black)
             }
         }
     }
 }
 
 #Preview {
-    SpeechBubble(text: "Ahoy Matey! Welcome to Ocean Guard!", text2: "Click on me if you want to learn the ropes!")
+    SpeechBubble(text: "Ahoy Matey! Welcome to Sea Guard!", text2: "Click on me if you want to learn the ropes!")
 }

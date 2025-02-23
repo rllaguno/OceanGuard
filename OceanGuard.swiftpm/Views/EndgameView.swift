@@ -32,6 +32,7 @@ struct EndgameView: View {
                 MultiSpacer(quantity: 1)
                 
                 Button {
+                    updateStats()
                     appViewModel.resetGame()
                     appViewModel.currentScreen = .title
                 } label: {
@@ -56,7 +57,7 @@ struct EndgameView: View {
                 VStack {
                     MultiSpacer(quantity: 1)
                     
-                    EndSpeechBubble(text: "Ye did a fine job cleanin’ the seas! The ocean be grateful", text2: "for yer hard work—keep sailin’ and savin’ the blue!", length: 650, highscore: appViewModel.currentScore > highScore)
+                    EndSpeechBubble(text: "Ye did a fine job cleanin’ the seas! The ocean be grateful", text2: "for yer hard work—keep sailin’ and savin’ the blue!", length: 650, highscore: isHighscore)
                     
                     TitleAnimation(type: "Mono Neutral")
                 }
@@ -79,9 +80,6 @@ struct EndgameView: View {
             }
         }
         .background(.teal.gradient)
-        .onAppear() {
-            updateStats()
-        }
 
     }
     

@@ -50,7 +50,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         
         setupLabels()
         startTimer()
-        startGyroscope()
+        startDeviceMotion()
         startSpawningTrash()
         startSpawningItem()
     }
@@ -72,19 +72,25 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         }
     }
     
-    func startGyroscope() {
-        if motionManager.isGyroAvailable {
-            motionManager.startGyroUpdates(to: .main) { [weak self] data, _ in
+    func startDeviceMotion() {
+        if motionManager.isAccelerometerAvailable {
+            motionManager.accelerometerUpdateInterval = 1.0 / 60.0
+            motionManager.startAccelerometerUpdates(to: .main) { [weak self] data, _ in
                 guard let self = self, let data = data else { return }
                 
-                let rotationRate = data.rotationRate.z
+                let tiltAngle = atan2(data.acceleration.y, data.acceleration.x) * 180 / .pi
+
+                let deadZone = 175.0
+                let maxAngle = 155.0
+                let maxRotationSpeed: CGFloat = 0.04
                 
-                if rotationRate > 0.020 || rotationRate < -0.020 {
-                    let rotationSpeed: CGFloat = 0.03
-                    if rotationRate > 0 {
-                        self.boat.zRotation += rotationSpeed
+                if abs(tiltAngle) < deadZone {
+                    if abs(tiltAngle) <= maxAngle {
+                        self.boat.zRotation -= maxRotationSpeed * (tiltAngle > 0 ? -1 : 1)
                     } else {
-                        self.boat.zRotation -= rotationSpeed
+                        let normalizedAngle = (abs(tiltAngle) - deadZone) / (maxAngle - deadZone)
+                        let rotationSpeed = maxRotationSpeed * CGFloat(normalizedAngle)
+                        self.boat.zRotation -= rotationSpeed * (tiltAngle > 0 ? -1 : 1)
                     }
                 }
             }
@@ -204,7 +210,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let spawnAction = SKAction.run { [weak self] in
             self?.spawnItem()
         }
-        let waitAction = SKAction.wait(forDuration: 2)
+        let waitAction = SKAction.wait(forDuration: 1.50)
         let sequence = SKAction.sequence([spawnAction, waitAction])
         let repeatForever = SKAction.repeatForever(sequence)
         run(repeatForever)
@@ -214,7 +220,7 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         let probability: Int = Int.random(in: 1...100)
         var itemType: Int = 0
         
-        if probability < 20 {
+        if probability < 30 {
             itemType = 1 //Gear Upgrade
         } else {
             itemType = 0 //Battery

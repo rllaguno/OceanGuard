@@ -63,7 +63,7 @@ struct StatisticsView: View {
                         ItemBox(type: "Botella Torcida", quantity: green)
                     }
                     HStack {
-                        StatBox(text: "Total Ocean Guard runs:", number: runs, text2: "runs")
+                        StatBox(text: "Total Sea Guard runs:", number: runs, text2: "runs")
                         ItemBox(type: "Bolsa CONAD", quantity: orange)
                         ItemBox(type: "Lata", quantity: red)
                     }

@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-struct BackButton: View {
+struct PreviousButton: View {
     var body: some View {
         ZStack {
             Circle()
                 .frame(height: 50)
-                .foregroundStyle(.black)
             
             Circle()
                 .frame(height: 40)
@@ -20,11 +19,10 @@ struct BackButton: View {
             
             Image(systemName: "arrow.backward")
                 .font(.system(size: 20, weight: .bold))
-                .foregroundStyle(.black)
         }
     }
 }
 
 #Preview {
-    BackButton()
+    PreviousButton()
 }
