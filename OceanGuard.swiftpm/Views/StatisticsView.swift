@@ -11,6 +11,10 @@ struct StatisticsView: View {
     @AppStorage("highScore") private var highScore = 0
     @AppStorage("total") private var total = 0
     @AppStorage("runs") private var runs = 0
+    @AppStorage("blue") private var blue = 0
+    @AppStorage("green") private var green = 0
+    @AppStorage("orange") private var orange = 0
+    @AppStorage("red") private var red = 0
     
     @EnvironmentObject var appViewModel: AppViewModel
 
@@ -52,9 +56,17 @@ struct StatisticsView: View {
                 Spacer()
                 
                 VStack {
-                    StatBox(text: "Most trash picked in a run:", number: highScore, text2: "items")
-                    StatBox(text: "Total trash picked:", number: total, text2: "items")
-                    StatBox(text: "Total Ocean Guard runs:", number: runs, text2: "runs")
+                    HighscoreBox(text: "Most trash picked in a run:", number: highScore, text2: "items")
+                    HStack {
+                        StatBox(text: "Total trash picked:", number: total, text2: "items")
+                        ItemBox(type: "Botella Aplastada", quantity: blue)
+                        ItemBox(type: "Botella Torcida", quantity: green)
+                    }
+                    HStack {
+                        StatBox(text: "Total Ocean Guard runs:", number: runs, text2: "runs")
+                        ItemBox(type: "Bolsa CONAD", quantity: orange)
+                        ItemBox(type: "Lata", quantity: red)
+                    }
                 }
                 
                 Spacer()

@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "OceanGuard",
+    name: "Ocean Guard",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "OceanGuard",
+            name: "Ocean Guard",
             targets: ["AppModule"],
             bundleIdentifier: "me.llaguno.rodrigo.OceanGuard",
             teamIdentifier: "FU5W7DQJJC",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .boat),
+            appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.teal),
             supportedDeviceFamilies: [
                 .pad,

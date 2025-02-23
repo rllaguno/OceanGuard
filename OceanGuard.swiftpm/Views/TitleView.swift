@@ -28,6 +28,7 @@ struct TitleView: View {
                         MultiSpacer(quantity: 6)
                         
                         Button {
+                            appViewModel.resetGame()
                             appViewModel.currentScreen = .game
                         } label: {
                             Image("StartTitle")

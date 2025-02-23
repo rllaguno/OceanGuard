@@ -13,6 +13,10 @@ struct EndgameView: View {
     @AppStorage("highScore") private var highScore = 0
     @AppStorage("total") private var total = 0
     @AppStorage("runs") private var runs = 0
+    @AppStorage("blue") private var blue = 0
+    @AppStorage("green") private var green = 0
+    @AppStorage("orange") private var orange = 0
+    @AppStorage("red") private var red = 0
     
     var isHighscore: Bool {
         if appViewModel.currentScore > highScore {
@@ -28,8 +32,7 @@ struct EndgameView: View {
                 MultiSpacer(quantity: 1)
                 
                 Button {
-                    updateStats()
-                    resetGame()
+                    appViewModel.resetGame()
                     appViewModel.currentScreen = .title
                 } label: {
                     BackButton()
@@ -76,23 +79,24 @@ struct EndgameView: View {
             }
         }
         .background(.teal.gradient)
+        .onAppear() {
+            updateStats()
+        }
 
     }
     
     func updateStats() {
         runs += 1
+        
         total += appViewModel.currentScore
+        blue += appViewModel.currentBlueBottles
+        green += appViewModel.currentGreenBottles
+        orange += appViewModel.currentOrangeBags
+        red += appViewModel.currentRedCans
+        
         if appViewModel.currentScore > highScore {
             highScore = appViewModel.currentScore
         }
-    }
-    
-    func resetGame() {
-        appViewModel.currentScore = 0
-        appViewModel.currentGreenBottles = 0
-        appViewModel.currentRedCans = 0
-        appViewModel.currentBlueBottles = 0
-        appViewModel.currentOrangeBags = 0
     }
 }
 

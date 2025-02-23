@@ -29,4 +29,12 @@ class AppViewModel: ObservableObject {
     //Current Blue Red Cans
     @Published var currentRedCans: Int = 0
     
+    func resetGame() {
+        currentScore = 0
+        currentGreenBottles = 0
+        currentRedCans = 0
+        currentBlueBottles = 0
+        currentOrangeBags = 0
+    }
+    
 }

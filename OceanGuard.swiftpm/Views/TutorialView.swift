@@ -30,11 +30,21 @@ struct TutorialView: View {
 
             }
             
-            MultiSpacer(quantity: 1)
+            Spacer()
             
             TutorialSpeechBubble(text: getText1(tutorialScreen: tutorialScreen), text2: getText2(tutorialScreen: tutorialScreen), length: getLength(tutorialScreen: tutorialScreen))
             
-            TitleAnimation(type: getImage(tutorialScreen: tutorialScreen))
+            HStack {
+                Spacer()
+                
+                TitleAnimation(type: getImage(tutorialScreen: tutorialScreen))
+                
+                Spacer()
+                
+                ImageBox(images: getSupportImages(tutorialScreen: tutorialScreen))
+                
+                MultiSpacer(quantity: 2)
+            }
             
             Spacer()
             
@@ -146,6 +156,25 @@ struct TutorialView: View {
             return 700
         default:
             return 600
+        }
+    }
+    
+    func getSupportImages(tutorialScreen: Int) -> [String] {
+        switch tutorialScreen {
+        case 1:
+            return ["OceanGuardTitle"]
+        case 2:
+            return ["Botella Torcida", "Botella Aplastada", "Bolsa CONAD", "Lata"]
+        case 3:
+            return ["Battery"]
+        case 4:
+            return ["Boat"]
+        case 5:
+            return ["Battery Upgrade", "Gear Upgrade"]
+        case 6:
+            return ["OceanGuardTitle"]
+        default:
+            return [""]
         }
     }
 }

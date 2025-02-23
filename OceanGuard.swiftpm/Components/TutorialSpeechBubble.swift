@@ -19,13 +19,13 @@ struct TutorialSpeechBubble: View {
                 .foregroundStyle(Color.black)
                 .frame(width: 60, height: 60)
                 .rotationEffect(.degrees(45))
-                .offset(x: 160, y: 40)
+                .offset(x: -140, y: 40)
             
             Rectangle()
                 .foregroundStyle(Color.speechBubble)
                 .frame(width: 50, height: 50)
                 .rotationEffect(.degrees(45))
-                .offset(x: 160, y: 40)
+                .offset(x: -140, y: 40)
             
             Rectangle()
                 .foregroundStyle(Color.black)
@@ -36,7 +36,7 @@ struct TutorialSpeechBubble: View {
                 .foregroundStyle(Color.speechBubble)
                 .frame(width: 50, height: 50)
                 .rotationEffect(.degrees(45))
-                .offset(x: 160, y: 40)
+                .offset(x: -140, y: 40)
             
             Rectangle()
                 .foregroundStyle(Color.speechBubble)

@@ -10,20 +10,24 @@ import CoreMotion
 import SwiftUI
 
 class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
-    let boat = SKSpriteNode(imageNamed: "Boat") // Boat sprite
+    let boat = SKSpriteNode(imageNamed: "Boat")
     let motionManager = CMMotionManager()
-    var appViewModel: AppViewModel? // Store reference to ViewModel
+    var appViewModel: AppViewModel?
     
     var timer: Timer?
-    var timeRemaining: Int = 30
+    var timeRemaining: Int = 100
+    var gearLevel: Int = 1
+    var boatVelocity: CGFloat = 2
     var timerLabel: SKLabelNode!
     var scoreLabel: SKLabelNode!
+    var gearLabel: SKLabelNode!
     
     let trashTypes = ["Bolsa CONAD", "Botella Aplastada", "Botella Torcida", "Lata"]
+    let itemTypes = ["Battery Upgrade", "Gear Upgrade"]
     
     struct CollisionCategory {
-        static let boat: UInt32 = 0x1 << 0     // 1
-        static let trash: UInt32 = 0x1 << 1    // 2
+        static let boat: UInt32 = 0x1 << 0 // 1
+        static let trash: UInt32 = 0x1 << 1 // 2
     }
     
     override func didMove(to view: SKView) {
@@ -48,18 +52,18 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         startTimer()
         startGyroscope()
         startSpawningTrash()
-
+        startSpawningItem()
     }
     
     func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.33, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
     
     @objc func updateTimer() {
         timeRemaining -= 1
         
         DispatchQueue.main.async {
-            self.timerLabel.text = "\(self.timeRemaining)"
+            self.timerLabel.text = "\(self.timeRemaining)%"
         }
         
         if timeRemaining <= 0 {
@@ -73,61 +77,86 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
             motionManager.startGyroUpdates(to: .main) { [weak self] data, _ in
                 guard let self = self, let data = data else { return }
                 
-                // Get the Z-axis rotation rate from the gyroscope
-                let rotationRate = data.rotationRate.z  // Left/Right tilt (Z-axis)
+                let rotationRate = data.rotationRate.z
                 
-                // Rotate the boat continuously when the iPad is tilted
                 if rotationRate > 0.020 || rotationRate < -0.020 {
                     let rotationSpeed: CGFloat = 0.03
                     if rotationRate > 0 {
-                        self.boat.zRotation += rotationSpeed  // Rotate right
+                        self.boat.zRotation += rotationSpeed
                     } else {
-                        self.boat.zRotation -= rotationSpeed  // Rotate left
+                        self.boat.zRotation -= rotationSpeed
                     }
                 }
             }
         }
+    }
+        
+    func setupLabels() {
+        let timerBackground = SKShapeNode(rectOf: CGSize(width: 300, height: 100), cornerRadius: 20)
+        timerBackground.fillColor = .systemTeal.withAlphaComponent(0.4)
+        timerBackground.position = CGPoint(x: size.width / 2 - 350, y: size.height - 70)
+        timerBackground.zPosition = 100
+        addChild(timerBackground)
+        
+        let timerImage = SKSpriteNode(imageNamed: "Battery")
+        timerImage.position = CGPoint(x: size.width / 2 - 450, y: size.height - 70)
+        timerImage.zPosition = 100
+        timerImage.size = CGSize(width: 100, height: 100)
+        timerImage.zRotation = CGFloat.pi / 2
+        addChild(timerImage)
+                
+        timerLabel = SKLabelNode(text: "\(timeRemaining)%")
+        timerLabel.fontSize = 80
+        timerLabel.fontColor = .white
+        timerLabel.fontName = "Futura"
+        timerLabel.position = CGPoint(x: size.width / 2 - 310, y: size.height - 100)
+        timerLabel.zPosition = 100
+        addChild(timerLabel)
+        
+        let scoreBackground = SKShapeNode(rectOf: CGSize(width: 380, height: 100), cornerRadius: 20)
+        scoreBackground.fillColor = .systemTeal.withAlphaComponent(0.4)
+        scoreBackground.position = CGPoint(x: size.width / 2 + 15, y: size.height - 70)
+        scoreBackground.zPosition = 100
+        addChild(scoreBackground)
+        
+        scoreLabel = SKLabelNode(text: "\(appViewModel?.currentScore ?? 0) items")
+        scoreLabel.fontSize = 80
+        scoreLabel.fontColor = .white
+        scoreLabel.fontName = "Futura"
+        scoreLabel.position = CGPoint(x: size.width / 2 + 15, y: size.height - 100)
+        scoreLabel.zPosition = 100
+        addChild(scoreLabel)
+        
+        let gearBackground = SKShapeNode(rectOf: CGSize(width: 270, height: 100), cornerRadius: 20)
+        gearBackground.fillColor = .systemTeal.withAlphaComponent(0.4)
+        gearBackground.position = CGPoint(x: size.width / 2 + 365, y: size.height - 70)
+        gearBackground.zPosition = 100
+        addChild(gearBackground)
+        
+        let gearImage = SKSpriteNode(imageNamed: "Gear")
+        gearImage.position = CGPoint(x: size.width / 2 + 445, y: size.height - 70)
+        gearImage.zPosition = 100
+        gearImage.size = CGSize(width: 100, height: 100)
+        gearImage.zRotation = CGFloat.pi / 2
+        addChild(gearImage)
+                
+        gearLabel = SKLabelNode(text: "Lv.\(gearLevel)")
+        gearLabel.fontSize = 80
+        gearLabel.fontColor = .white
+        gearLabel.fontName = "Futura"
+        gearLabel.position = CGPoint(x: size.width / 2 + 320, y: size.height - 100)
+        gearLabel.zPosition = 100
+        addChild(gearLabel)
     }
     
     func startSpawningTrash() {
         let spawnAction = SKAction.run { [weak self] in
             self?.spawnTrash()
         }
-        let waitAction = SKAction.wait(forDuration: 0.05) // Spawns trash every 2 seconds
+        let waitAction = SKAction.wait(forDuration: 0.05)
         let sequence = SKAction.sequence([spawnAction, waitAction])
         let repeatForever = SKAction.repeatForever(sequence)
         run(repeatForever)
-    }
-    
-    func setupLabels() {
-        let timerBackground = SKShapeNode(rectOf: CGSize(width: 120, height: 100), cornerRadius: 20)
-        timerBackground.fillColor = .white.withAlphaComponent(0.4)
-        timerBackground.position = CGPoint(x: size.width / 2 - 150, y: size.height - 70)
-        timerBackground.zPosition = 100
-        addChild(timerBackground)
-        
-        timerLabel = SKLabelNode(text: "\(timeRemaining)")
-        timerLabel.fontSize = 80
-        timerLabel.fontColor = .black
-        timerLabel.fontName = "Futura"
-        timerLabel.position = CGPoint(x: size.width / 2 - 150, y: size.height - 100)
-        timerLabel.zPosition = 100
-        addChild(timerLabel)
-        
-        let scoreBackground = SKShapeNode(rectOf: CGSize(width: 340, height: 100), cornerRadius: 20)
-        scoreBackground.fillColor = .white.withAlphaComponent(0.4)
-        scoreBackground.position = CGPoint(x: size.width / 2 + 100, y: size.height - 70)
-        scoreBackground.zPosition = 100
-        addChild(scoreBackground)
-        
-        scoreLabel = SKLabelNode(text: "Score: \(appViewModel?.currentScore ?? 0)")
-        scoreLabel.fontSize = 80
-        scoreLabel.fontColor = .black
-        scoreLabel.fontName = "Futura"
-        scoreLabel.position = CGPoint(x: size.width / 2 + 100, y: size.height - 100)
-        scoreLabel.zPosition = 100
-        addChild(scoreLabel)
-        
     }
     
     func spawnTrash() {
@@ -154,7 +183,6 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
 
         trash.setScale(0.05)
         
-        // trash physics
         trash.physicsBody = SKPhysicsBody(rectangleOf: trash.size)
         trash.physicsBody?.isDynamic = true
         trash.physicsBody?.affectedByGravity = false
@@ -162,7 +190,6 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         trash.physicsBody?.contactTestBitMask = CollisionCategory.boat
         trash.physicsBody?.collisionBitMask = 0
         
-        // trash movement
         let randomAngle = CGFloat.random(in: 0...(2 * .pi))
         let speed: CGFloat = 70.0
         let dx = cos(randomAngle) * speed
@@ -173,9 +200,69 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         addChild(trash)
     }
     
+    func startSpawningItem() {
+        let spawnAction = SKAction.run { [weak self] in
+            self?.spawnItem()
+        }
+        let waitAction = SKAction.wait(forDuration: 2)
+        let sequence = SKAction.sequence([spawnAction, waitAction])
+        let repeatForever = SKAction.repeatForever(sequence)
+        run(repeatForever)
+    }
+    
+    func spawnItem() {
+        let probability: Int = Int.random(in: 1...100)
+        var itemType: Int = 0
+        
+        if probability < 20 {
+            itemType = 1 //Gear Upgrade
+        } else {
+            itemType = 0 //Battery
+        }
+        
+        let randomItem = itemTypes[itemType]
+        
+        let item = SKSpriteNode(imageNamed: randomItem)
+        item.name = randomItem
+        
+        let spawnSide = Int.random(in: 0...3)
+        switch spawnSide {
+        case 0: // Top
+            let randomX = CGFloat.random(in: 0...size.width)
+            item.position = CGPoint(x: randomX, y: size.height + 50)
+        case 1: // Right
+            let randomY = CGFloat.random(in: 0...size.height)
+            item.position = CGPoint(x: size.width + 50, y: randomY)
+        case 2: // Bottom
+            let randomX = CGFloat.random(in: 0...size.width)
+            item.position = CGPoint(x: randomX, y: -50)
+        default: // Left
+            let randomY = CGFloat.random(in: 0...size.height)
+            item.position = CGPoint(x: -50, y: randomY)
+        }
+        
+        item.setScale(0.05)
+        
+        item.physicsBody = SKPhysicsBody(rectangleOf: item.size)
+        item.physicsBody?.isDynamic = true
+        item.physicsBody?.affectedByGravity = false
+        item.physicsBody?.categoryBitMask = CollisionCategory.trash
+        item.physicsBody?.contactTestBitMask = CollisionCategory.boat
+        item.physicsBody?.collisionBitMask = 0
+        
+        let randomAngle = CGFloat.random(in: 0...(2 * .pi))
+        let speed: CGFloat = 70.0
+        let dx = cos(randomAngle) * speed
+        let dy = sin(randomAngle) * speed
+        item.physicsBody?.velocity = CGVector(dx: dx, dy: dy)
+        item.zPosition = 10
+        
+        addChild(item)
+    }
+    
     func increaseScore(name: String) {
         appViewModel?.currentScore += 1
-        scoreLabel.text = "Score: \(appViewModel?.currentScore ?? 0)"
+        scoreLabel.text = "\(appViewModel?.currentScore ?? 0) \(appViewModel?.currentScore == 1 ? "item" : "items")"
         
         if name == "Bolsa CONAD" {
             appViewModel?.currentOrangeBags += 1
@@ -186,6 +273,21 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
         } else {
             appViewModel?.currentBlueBottles += 1
         }
+    }
+    
+    func increaseBattery() {
+        if timeRemaining < 100 {
+            timeRemaining += 5
+        }
+    }
+    
+    func upgradeGear() {
+        if gearLevel < 7 {
+            gearLevel += 1
+            boatVelocity += 0.2
+            gearLabel.text = "Lv.\(gearLevel)"
+        }
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -199,12 +301,17 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
                 trashNode = contact.bodyB.node!
             }
             
-            // Remove the trash with a fade-out animation
             let fadeOut = SKAction.fadeOut(withDuration: 0.1)
             let remove = SKAction.removeFromParent()
             let sequence = SKAction.sequence([fadeOut, remove])
 
-            increaseScore(name: trashNode.name!)
+            if trashNode.name == "Battery Upgrade" {
+                increaseBattery()
+            } else if trashNode.name == "Gear Upgrade" {
+                upgradeGear()
+            } else {
+                increaseScore(name: trashNode.name!)
+            }
             
             trashNode.run(sequence)
             
@@ -212,35 +319,29 @@ class GameScene: SKScene, @preconcurrency SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Ensure boat stays within screen boundaries
         let boatHalfWidth = boat.size.width / 2
         let boatHalfHeight = boat.size.height / 2
         
-        // Screen boundaries
         let screenWidth = size.width
         let screenHeight = size.height
         
-        // Check if boat is out of bounds and adjust position if needed
         if boat.position.x - boatHalfWidth < 0 {
-            boat.position.x = boatHalfWidth // Prevent boat from going left
+            boat.position.x = boatHalfWidth
         } else if boat.position.x + boatHalfWidth > screenWidth {
-            boat.position.x = screenWidth - boatHalfWidth // Prevent boat from going right
+            boat.position.x = screenWidth - boatHalfWidth
         }
         
         if boat.position.y - boatHalfHeight < 0 {
-            boat.position.y = boatHalfHeight // Prevent boat from going down
+            boat.position.y = boatHalfHeight
         } else if boat.position.y + boatHalfHeight > screenHeight {
-            boat.position.y = screenHeight - boatHalfHeight // Prevent boat from going up
+            boat.position.y = screenHeight - boatHalfHeight
         }
         
-        // Move the boat in the direction it's facing
-        let speed: CGFloat = 2  // Movement speed
+        let speed: CGFloat = boatVelocity
         
-        // Calculate movement in the direction of the boat's rotation
         let dx = cos(boat.zRotation) * speed
         let dy = sin(boat.zRotation) * speed
         
-        // Update the boat's position
         boat.position.x += dx
         boat.position.y += dy
     }
